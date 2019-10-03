@@ -1,6 +1,7 @@
 /**
  * @file Testing the ts-package-json-types rule.
  * @author Arpan Laha
+ * @author Will Temple
  */
 
 import rule from "../../src/rules/ts-apiextractor-json-types";
@@ -90,7 +91,8 @@ ruleTester.run("ts-package-json-types", rule, {
   valid: [
     {
       // only the fields we care about
-      code: '{"dtsRollup": {"publicTrimmedFilePath": "typings/package-a.d.ts"}}',
+      code:
+        '{"dtsRollup": {"publicTrimmedFilePath": "typings/package-a.d.ts"}}',
       filename: "sdk/package/package-a/api-extractor.json"
     },
     {
@@ -100,7 +102,8 @@ ruleTester.run("ts-package-json-types", rule, {
     },
     {
       // only the fields we care about
-      code: '{"dtsRollup": {"publicTrimmedFilePath": "typings/package-a.d.ts"}}',
+      code:
+        '{"dtsRollup": {"publicTrimmedFilePath": "typings/package-a.d.ts"}}',
       filename: "sdk/package/package-a/not_api-extractor.json"
     }
   ],
@@ -126,7 +129,8 @@ ruleTester.run("ts-package-json-types", rule, {
     },
     {
       // dtsRollup is in a nested object
-      code: '{"outer": {"dtsRollup": {"publicTrimmedFilePath" : "./types/package-a.d.ts"}}}',
+      code:
+        '{"outer": {"dtsRollup": {"publicTrimmedFilePath" : "./types/package-a.d.ts"}}}',
       filename: "sdk/package/package-a/api-extractor.json",
       errors: [
         {
@@ -145,12 +149,24 @@ ruleTester.run("ts-package-json-types", rule, {
       ]
     },
     {
-      // only the fields we care about
-      code: '{"dtsRollup": {"publicTrimmedFilePath": "./typings/package-a.ts"}}',
+      // publicTrimmedFilePath set to a non-string literal
+      code: `{"dtsRollup": {"publicTrimmedFilePath": {}}}`,
       filename: "sdk/package/package-a/api-extractor.json",
       errors: [
         {
-          message: "provided .d.ts rollup path is not a TypeScript declaration file"
+          message: ".d.ts rollup path is not set to a string"
+        }
+      ]
+    },
+    {
+      // only the fields we care about
+      code:
+        '{"dtsRollup": {"publicTrimmedFilePath": "./typings/package-a.ts"}}',
+      filename: "sdk/package/package-a/api-extractor.json",
+      errors: [
+        {
+          message:
+            "provided .d.ts rollup path is not a TypeScript declaration file"
         }
       ]
     },
@@ -160,7 +176,8 @@ ruleTester.run("ts-package-json-types", rule, {
       filename: "sdk/template/template/api-extractor.json",
       errors: [
         {
-          message: "provided .d.ts rollup path should be named 'template.d.ts' after the package directory"
+          message:
+            "provided .d.ts rollup path should be named 'template.d.ts' after the package directory"
         }
       ]
     }
