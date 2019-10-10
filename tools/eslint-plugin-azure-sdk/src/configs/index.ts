@@ -3,6 +3,8 @@
  * @author Arpan Laha
  */
 
+import rootConfig from "./azure-sdk-base";
+
 /**
  * An object containing configurations available for the plugin
  */
@@ -63,5 +65,6 @@ export = {
     settings: {
       main: "src/index.ts"
     }
-  }
+  },
+  "azure-sdk-base": rootConfig
 };
